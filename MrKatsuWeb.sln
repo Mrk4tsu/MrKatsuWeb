@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MrKatsuWeb.Common", "MrKats
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MrKatsuWeb.DTO", "MrKatsuWeb.DTO\MrKatsuWeb.DTO.csproj", "{ACD4AC5B-190C-40F0-806F-45F085B395A6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MrKatsuWeb.Application", "MrKatsuWeb.Application\MrKatsuWeb.Application.csproj", "{61A6098C-99F0-4C56-9E1D-DF0E61D0122D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{ACD4AC5B-190C-40F0-806F-45F085B395A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACD4AC5B-190C-40F0-806F-45F085B395A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ACD4AC5B-190C-40F0-806F-45F085B395A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61A6098C-99F0-4C56-9E1D-DF0E61D0122D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61A6098C-99F0-4C56-9E1D-DF0E61D0122D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61A6098C-99F0-4C56-9E1D-DF0E61D0122D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61A6098C-99F0-4C56-9E1D-DF0E61D0122D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
