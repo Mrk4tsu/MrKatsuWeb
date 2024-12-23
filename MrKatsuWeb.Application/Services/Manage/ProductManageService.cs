@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MrKatsuWeb.Application.Interfaces.Manage;
+using MrKatsuWeb.Application.Interfaces.Utilities;
 using MrKatsuWeb.Common;
 using MrKatsuWeb.Data.EF;
 using MrKatsuWeb.Data.Entities;
@@ -11,9 +12,11 @@ namespace MrKatsuWeb.Application.Services.Manage
     {
         private readonly AppDbContext db;
         private const string FOLDER = "product";
-        public ProductManageService(AppDbContext db)
+        private readonly IImageService imageService;
+        public ProductManageService(AppDbContext db, IImageService imageService)
         {
             this.db = db;
+            this.imageService = imageService;
         }
         public IQueryable<Product> @query()
         {
@@ -49,9 +52,41 @@ namespace MrKatsuWeb.Application.Services.Manage
                 return null;
             return await q.ToListAsync();
         }
-        public Task<int> AddProduct(ProductCreateRequest request)
+        public async Task<int> AddProduct(ProductCreateRequest request)
         {
-            throw new NotImplementedException();
+            var productCode = StringHelper.GenerateGuid(9);
+            string? resultImage = "";
+            if (request.Image != null)
+            {
+                string folder = $"{FOLDER}/{productCode}";
+                resultImage = await imageService.SaveImage(request.Image, productCode, folder);
+            }
+
+            if (resultImage == null) return -1;
+            var product = new Product
+            {
+                CategoryId = request.CategoryId,
+                ProductCode = StringHelper.GenerateGuid(9),
+                ProductName = request.ProductName,
+                OriginalPrice = request.OriginalPrice,
+                PromotionPrice = 0,
+                SeoAlias = StringHelper.CreateSeoAlias(request.ProductName),
+                SeoDescription = request.SeoDescription,
+                SeoKeyword = request.SeoKeyword,
+                SeoTitle = request.SeoTitle,
+                Detail = request.Detail,
+                Version = request.Version,
+                Support = request.Support,
+                Image = resultImage,
+                Status = true,
+                CreateTime = DateTime.UtcNow,
+                UpdateTime = DateTime.UtcNow
+            };
+
+            db.Products.Add(product);
+            await db.SaveChangesAsync();
+
+            return product.Id;
         }
 
         public Task<bool> DeleteProduct(int productId)
