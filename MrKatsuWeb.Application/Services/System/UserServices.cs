@@ -47,6 +47,7 @@ namespace MrKatsuWeb.Application.Services.System
 
             var token = new JwtSecurityToken(
                 issuer: _config["Tokens:Issuer"],
+                audience: _config["Tokens:Audience"],
                 claims: claims,
                 expires: DateTime.Now.AddHours(3),
                 signingCredentials: creds

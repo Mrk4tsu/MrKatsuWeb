@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MrKatsuWeb.Application.Interfaces.Manage;
 using MrKatsuWeb.DTO.Products;
@@ -16,6 +17,7 @@ namespace MrKatsuWeb.Controllers
             this.service = productService;
         }
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetProducts()
         {
             try
