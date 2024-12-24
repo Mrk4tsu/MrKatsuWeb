@@ -21,7 +21,7 @@ namespace MrKatsuWeb.Utilities
                 data
             });
         }
-        public static IActionResult Error(string? message = null, CodeStatus statusCode = CodeStatus.NotFound, object errors = null)
+        public static IActionResult Error(string? message = null, CodeStatus statusCode = CodeStatus.BadRequest, object errors = null)
         {
             return new ObjectResult(new
             {

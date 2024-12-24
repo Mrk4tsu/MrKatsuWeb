@@ -3,7 +3,7 @@ using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Http;
 using MrKatsuWeb.Application.Interfaces.Utilities;
 
-namespace MrKatsuWeb.Application.Services
+namespace MrKatsuWeb.Application.Services.System
 {
     public class ImageService : IImageService
     {
@@ -14,7 +14,7 @@ namespace MrKatsuWeb.Application.Services
             _cloudinary = cloudinary;
         }
 
-        public Task DeleteFolder(string folder)=> _cloudinary.DeleteFolderAsync($"{ROOT_FOLDER}/{folder}");
+        public Task DeleteFolder(string folder) => _cloudinary.DeleteFolderAsync($"{ROOT_FOLDER}/{folder}");
 
         public async Task DeleteImage(string publicId, string folder)
         {
