@@ -23,7 +23,7 @@ namespace MrKatsuWeb.Data.Entities
         public int DownloadCount { get; set; }
         public string Version { get; set; } = string.Empty;
         public DateTime CreateTime { get; set; }
-        public DateTime? UpdateTime { get; set; }
+        public DateTime UpdateTime { get; set; }
         public bool Status { get; set; }
         public List<ProductLink> ProductLinks { get; set; }
     }

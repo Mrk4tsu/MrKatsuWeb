@@ -43,14 +43,13 @@ namespace MrKatsuWeb.Application.Services.Manage
                 SeoAlias = x.SeoAlias,
                 Support = x.Support.ToString(),
                 Version = x.Version,
-                DateCreate = x.CreateTime.ToString(),
-                DateUpdate = x.UpdateTime.HasValue ? x.UpdateTime.Value.ToString() : "N/A",
+                DateUpload = StringHelper.DateShowInCard(x.CreateTime, x.UpdateTime),
                 ViewCount = x.ViewCount,
                 DownloadCount = x.DownloadCount
             });
             if (await q.CountAsync() <= 0)
                 return null;
-            return await q.OrderByDescending(x => x.DateCreate).ToListAsync();
+            return await q.OrderByDescending(x => x.DateUpload).ToListAsync();
         }
         public async Task<int> AddProduct(ProductCreateRequest request)
         {
@@ -66,14 +65,14 @@ namespace MrKatsuWeb.Application.Services.Manage
             var product = new Product
             {
                 CategoryId = request.CategoryId,
-                ProductCode = StringHelper.GenerateGuid(9),
+                ProductCode = productCode,
                 ProductName = request.ProductName,
                 OriginalPrice = request.OriginalPrice,
                 PromotionPrice = 0,
                 SeoAlias = StringHelper.CreateSeoAlias(request.ProductName),
-                SeoDescription = request.SeoDescription,
-                SeoKeyword = request.SeoKeyword,
-                SeoTitle = request.SeoTitle,
+                SeoDescription = $"Khám phá {request.ProductName} - đã xuất hiện tại MrKatsu Website, miễn phí tải xuống! Cung cấp công cụ mạnh mẽ, dễ sử dụng, phù hợp cho mọi thành viên. Truy cập ngay để tải về!",
+                SeoKeyword = $"Tải xuống {request.ProductName} miễn phí",
+                SeoTitle = $"Truy cập ngay trang web MrKatsu để tải {request.ProductName} miễn phí",
                 Detail = request.Detail,
                 Version = request.Version,
                 Support = request.Support,
@@ -92,7 +91,7 @@ namespace MrKatsuWeb.Application.Services.Manage
                         ProductId = product.Id,
                         Link = link,
                         Description = $"Link tải {DateTime.Now.ToString("dd/MM/yyyy")}",
-                        Title = product.ProductName,
+                        Title = $"{StringHelper.CreateSeoAlias(product.ProductName)}-{product.Version}{link.IndexOf(link)}",
                         Status = true
                     });
                 }
@@ -109,8 +108,7 @@ namespace MrKatsuWeb.Application.Services.Manage
             if (product == null) return false;
             //product/123
             string folder = $"{FOLDER}/{product.ProductCode}";
-            var image = product.Image;
-            await imageService.DeleteImage(image, folder);
+            await imageService.DeleteImage(product.ProductCode, folder);
             await imageService.DeleteFolder($"{FOLDER}/{product.ProductCode}");
 
             db.Products.Remove(product);

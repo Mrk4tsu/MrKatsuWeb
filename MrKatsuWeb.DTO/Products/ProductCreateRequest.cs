@@ -12,9 +12,6 @@ namespace MrKatsuWeb.DTO.Products
     {
         public int CategoryId { get; set; }
         public string ProductName { get; set; }
-        public string SeoDescription { get; set; }
-        public string SeoTitle { get; set; }
-        public string SeoKeyword { get; set; }
         public decimal OriginalPrice { get; set; }
         public string Detail { get; set; }
         public string Version { get; set; }

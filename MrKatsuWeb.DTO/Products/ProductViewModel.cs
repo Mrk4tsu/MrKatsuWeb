@@ -14,7 +14,6 @@
         public int ViewCount { get; set; }
         public int DownloadCount { get; set; }
         public int CategoryId { get; set; }
-        public string DateCreate { get; set; }
-        public string DateUpdate { get; set; }
+        public string DateUpload { get; set; }
     }
 }
