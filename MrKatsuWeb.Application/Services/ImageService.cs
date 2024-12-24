@@ -35,7 +35,7 @@ namespace MrKatsuWeb.Application.Services
                     File = new FileDescription(file.FileName, stream),
                     Overwrite = true,
                     Format = "webp",
-                    Transformation = new Transformation().Width(1000).Crop("scale").Quality(35).FetchFormat("webp")
+                    Transformation = new Transformation().FetchFormat("webp").Quality(25)
                 };
                 var uploadResult = await _cloudinary.UploadAsync(uploadParams);
                 return uploadResult.SecureUrl.AbsoluteUri;

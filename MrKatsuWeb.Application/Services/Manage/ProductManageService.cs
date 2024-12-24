@@ -58,7 +58,7 @@ namespace MrKatsuWeb.Application.Services.Manage
             if (request.Image != null)
             {
                 string folder = $"{FOLDER}/{productCode}";
-                resultImage = await imageService.SaveImage(request.Image, productCode, folder);
+                resultImage = await imageService.SaveImage(request.Image, request.ProductName, folder);
             }
 
             if (resultImage == null) return -1;
@@ -80,16 +80,37 @@ namespace MrKatsuWeb.Application.Services.Manage
                 Status = true,
                 CreateTime = DateTime.Now,
                 UpdateTime = DateTime.Now,
-                ProductLinks = new List<ProductLink>()
+                ProductLinks = new List<ProductLink>(),
+                ProductImages = new List<ProductImage>()
             };
-            if(request.Link != null)
+            if (request.Images != null && request.Images.Count > 0)
+            {
+                for (int i = 0; i < request.Images.Count; i++)
+                {
+                    var publicId = request.ProductName + i;
+                    var resultUpload = await imageService.SaveImage(request.Images[i], publicId, $"{FOLDER}/{product.ProductCode}");
+                    if (resultUpload == null) return -5;
+
+                    // Thêm ảnh vào danh sách ProductImages
+                    product.ProductImages.Add(new ProductImage
+                    {
+                        //wwwroot/ABC-123/ABC-123-randomstring
+                        publicId = $"{publicId}",
+                        Path = resultUpload,
+                        ProductId = product.Id,
+                        Caption = $"Ảnh {request.ProductName} {i + 1}",
+                        SortOrder = i
+                    });
+                }
+            }
+            if (request.Link != null)
             {
                 foreach (var link in request.Link)
                 {
                     product.ProductLinks.Add(new ProductLink
                     {
                         ProductId = product.Id,
-                        Link = link,
+                        Link = link ?? string.Empty,
                         Description = $"Link tải {DateTime.Now.ToString("dd/MM/yyyy")}",
                         Title = $"{StringHelper.CreateSeoAlias(product.ProductName)}-{product.Version}{link.IndexOf(link)}",
                         Status = true
@@ -102,13 +123,21 @@ namespace MrKatsuWeb.Application.Services.Manage
             return product.Id;
         }
 
+
         public async Task<bool> DeleteProduct(int productId)
         {
             var product = await query().FirstOrDefaultAsync(x => x.Id == productId);
             if (product == null) return false;
             //product/123
             string folder = $"{FOLDER}/{product.ProductCode}";
-            await imageService.DeleteImage(product.ProductCode, folder);
+            var productImages = await db.ProductImages.Where(x => x.ProductId == product.Id).ToListAsync();
+            await imageService.DeleteImage(product.ProductName, folder);
+
+            foreach (var image in productImages)
+            {
+                await imageService.DeleteImage(image.publicId, folder);
+            }
+
             await imageService.DeleteFolder($"{FOLDER}/{product.ProductCode}");
 
             db.Products.Remove(product);

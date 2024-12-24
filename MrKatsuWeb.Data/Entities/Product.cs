@@ -26,5 +26,6 @@ namespace MrKatsuWeb.Data.Entities
         public DateTime UpdateTime { get; set; }
         public bool Status { get; set; }
         public List<ProductLink> ProductLinks { get; set; }
+        public List<ProductImage> ProductImages { get; set; }
     }
 }

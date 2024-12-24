@@ -13,8 +13,10 @@ namespace MrKatsuWeb.Data.EF
         {
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
             modelBuilder.ApplyConfiguration(new ProductLinkConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductImageConfiguration());
         }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductLink> ProductLinks { get; set; }
+        public DbSet<ProductImage> ProductImages { get; set; }
     }
 }
