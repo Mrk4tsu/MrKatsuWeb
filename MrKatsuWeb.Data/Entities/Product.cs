@@ -6,6 +6,7 @@ namespace MrKatsuWeb.Data.Entities
     {
         public int Id { get; set; }
         public int CategoryId { get; set; }
+        public int UserId { get; set; }
         public string ProductCode { get; set; } = string.Empty;
         public string ProductName { get; set; } = string.Empty;
         public string SeoAlias { get; set; } = string.Empty;
@@ -27,5 +28,6 @@ namespace MrKatsuWeb.Data.Entities
         public bool Status { get; set; }
         public List<ProductLink> ProductLinks { get; set; }
         public List<ProductImage> ProductImages { get; set; }
+        public User User { get; set; }
     }
 }

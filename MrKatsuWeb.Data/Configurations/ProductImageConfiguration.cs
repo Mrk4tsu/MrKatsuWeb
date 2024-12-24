@@ -16,7 +16,7 @@ namespace MrKatsuWeb.Data.Configurations
             builder.Property(x => x.Path).IsRequired().HasMaxLength(255);
             builder.Property(x => x.Caption).HasMaxLength(255);
             builder.Property(x => x.SortOrder).IsRequired();
-            builder.HasOne(x => x.Product).WithMany(x => x.ProductImages).HasForeignKey(x => x.ProductId);
+            builder.HasOne(x => x.Product).WithMany(x => x.ProductImages).HasForeignKey(x => x.ProductId).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

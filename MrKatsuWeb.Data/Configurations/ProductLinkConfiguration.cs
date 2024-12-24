@@ -15,7 +15,7 @@ namespace MrKatsuWeb.Data.Configurations
             builder.Property(x => x.Description).HasMaxLength(500);
             builder.Property(x => x.Status).HasDefaultValue(true);
 
-            builder.HasOne(x => x.Product).WithMany(x => x.ProductLinks).HasForeignKey(x => x.ProductId);
+            builder.HasOne(x => x.Product).WithMany(x => x.ProductLinks).HasForeignKey(x => x.ProductId).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -24,11 +24,13 @@ namespace MrKatsuWeb.Data.Configurations
             builder.Property(x => x.DownloadCount).HasDefaultValue(0);
             builder.Property(x => x.PromotionPrice).HasPrecision(18, 2).HasDefaultValue(0);
             builder.Property(x => x.OriginalPrice).HasPrecision(18, 2).HasDefaultValue(0);
-            builder.Property(x => x.Version).HasDefaultValue("1.0.0");
+            builder.Property(x => x.Version);
             builder.Property(x => x.CreateTime).HasDefaultValue(DateTime.UtcNow);
 
             builder.Property(x => x.SeoDescription).IsUnicode(true).HasMaxLength(500);
             builder.Property(x => x.Detail).IsUnicode(true);
+
+            builder.HasOne(x => x.User).WithMany(x => x.Products).HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
