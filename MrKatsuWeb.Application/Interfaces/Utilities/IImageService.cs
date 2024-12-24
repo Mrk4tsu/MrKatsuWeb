@@ -6,6 +6,5 @@ namespace MrKatsuWeb.Application.Interfaces.Utilities
     {
         Task<string?> SaveImage(IFormFile file);
         Task<string?> SaveImage(IFormFile file, string publicId, string folder);
-        MemoryStream ConvertToWebP(IFormFile file);
     }
 }

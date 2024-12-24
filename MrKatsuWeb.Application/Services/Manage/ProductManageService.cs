@@ -50,7 +50,7 @@ namespace MrKatsuWeb.Application.Services.Manage
             });
             if (await q.CountAsync() <= 0)
                 return null;
-            return await q.ToListAsync();
+            return await q.OrderByDescending(x => x.DateCreate).ToListAsync();
         }
         public async Task<int> AddProduct(ProductCreateRequest request)
         {
@@ -79,8 +79,8 @@ namespace MrKatsuWeb.Application.Services.Manage
                 Support = request.Support,
                 Image = resultImage,
                 Status = true,
-                CreateTime = DateTime.UtcNow,
-                UpdateTime = DateTime.UtcNow
+                CreateTime = DateTime.Now,
+                UpdateTime = DateTime.Now
             };
 
             db.Products.Add(product);

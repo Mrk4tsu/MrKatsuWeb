@@ -12,7 +12,9 @@ namespace MrKatsuWeb.Data.EF
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductLinkConfiguration());
         }
         public DbSet<Product> Products { get; set; }
+        public DbSet<ProductLink> ProductLinks { get; set; }
     }
 }
