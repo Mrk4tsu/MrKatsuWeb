@@ -14,6 +14,17 @@ namespace MrKatsuWeb.Application.Services
             _cloudinary = cloudinary;
         }
 
+        public Task DeleteFolder(string folder)=> _cloudinary.DeleteFolderAsync($"{ROOT_FOLDER}/{folder}");
+
+        public async Task DeleteImage(string publicId, string folder)
+        {
+            var deleteParams = new DeletionParams($"{ROOT_FOLDER}/{folder}/{publicId}")
+            {
+                ResourceType = ResourceType.Image,
+            };
+            var result = await _cloudinary.DestroyAsync(deleteParams);
+        }
+
         public async Task<string?> SaveImage(IFormFile file)
         {
             if (file.Length > 0)

@@ -50,5 +50,22 @@ namespace MrKatsuWeb.Controllers
                 return APIRespone.Error(ex.Message, CodeStatus.InternalServerError);
             }
         }
+        [HttpDelete]
+        public async Task<IActionResult> DeleteProduct(int productId)
+        {
+            try
+            {
+                var result = await service.DeleteProduct(productId);
+                if (!result)
+                    return APIRespone.Error("Không xóa được sản phẩm", CodeStatus.BadRequest);
+
+                return APIRespone.Success(result);
+            }
+            catch (Exception ex)
+            {
+                // Trả về lỗi chi tiết
+                return APIRespone.Error(ex.Message, CodeStatus.InternalServerError);
+            }
+        }
     }
 }

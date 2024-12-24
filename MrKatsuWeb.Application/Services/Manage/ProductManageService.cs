@@ -80,18 +80,42 @@ namespace MrKatsuWeb.Application.Services.Manage
                 Image = resultImage,
                 Status = true,
                 CreateTime = DateTime.Now,
-                UpdateTime = DateTime.Now
+                UpdateTime = DateTime.Now,
+                ProductLinks = new List<ProductLink>()
             };
-
+            if(request.Link != null)
+            {
+                foreach (var link in request.Link)
+                {
+                    product.ProductLinks.Add(new ProductLink
+                    {
+                        ProductId = product.Id,
+                        Link = link,
+                        Description = $"Link tải {DateTime.Now.ToString("dd/MM/yyyy")}",
+                        Title = product.ProductName,
+                        Status = true
+                    });
+                }
+            }
             db.Products.Add(product);
             await db.SaveChangesAsync();
 
             return product.Id;
         }
 
-        public Task<bool> DeleteProduct(int productId)
+        public async Task<bool> DeleteProduct(int productId)
         {
-            throw new NotImplementedException();
+            var product = await query().FirstOrDefaultAsync(x => x.Id == productId);
+            if (product == null) return false;
+            //product/123
+            string folder = $"{FOLDER}/{product.ProductCode}";
+            var image = product.Image;
+            await imageService.DeleteImage(image, folder);
+            await imageService.DeleteFolder($"{FOLDER}/{product.ProductCode}");
+
+            db.Products.Remove(product);
+            await db.SaveChangesAsync();
+            return true;
         }
 
 
@@ -108,6 +132,21 @@ namespace MrKatsuWeb.Application.Services.Manage
             throw new NotImplementedException();
         }
 
-
+        public async Task<bool> AddLinkProduct(LinkCreateRequest request)
+        {
+            var product = query().FirstOrDefault(x => x.Id == request.ProductId);
+            if (product == null) return false;
+            var link = new ProductLink
+            {
+                ProductId = request.ProductId,
+                Link = request.Link,
+                Description = request.Description,
+                Title = $"Link tải {DateTime.Now.ToString("dd/MM/yyyy")}",
+                Status = true
+            };
+            db.ProductLinks.Add(link);
+            await db.SaveChangesAsync();
+            return true;
+        }
     }
 }

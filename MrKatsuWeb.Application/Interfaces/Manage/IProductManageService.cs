@@ -17,5 +17,6 @@ namespace MrKatsuWeb.Application.Interfaces.Manage
         Task<int> UpdateProduct(ProductUpdateRequest request);
         Task<bool> DeleteProduct(int productId);
         Task<bool> IsExisting(string productCode);
+        Task<bool> AddLinkProduct(LinkCreateRequest request);
     }
 }

@@ -6,6 +6,14 @@ namespace MrKatsuWeb.Common
 {
     public class StringHelper
     {
+        public static string DateShowInCard(DateTime createdate, DateTime updatedate)
+        {
+            if (createdate == updatedate)
+            {
+                return createdate.ToString("dd/MM/yyyy");
+            }
+            return updatedate.ToString("dd/MM/yyyy");
+        }
         public static string GenerateGuid(int lenght)
         {
             var newCode = Guid.NewGuid().ToString().Replace("-", "").Substring(0, lenght);
@@ -63,5 +71,6 @@ namespace MrKatsuWeb.Common
 
             return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
         }
+    
     }
 }

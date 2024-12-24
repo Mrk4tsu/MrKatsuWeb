@@ -20,6 +20,6 @@ namespace MrKatsuWeb.DTO.Products
         public string Version { get; set; }
         public ProductStatus Support { get; set; }
         public IFormFile Image { get; set; }
-        //public IFormFile Image { get; set; }
+        public List<string> Link { get; set; }
     }
 }

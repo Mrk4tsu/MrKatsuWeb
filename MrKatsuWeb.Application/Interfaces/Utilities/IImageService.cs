@@ -6,5 +6,7 @@ namespace MrKatsuWeb.Application.Interfaces.Utilities
     {
         Task<string?> SaveImage(IFormFile file);
         Task<string?> SaveImage(IFormFile file, string publicId, string folder);
+        Task DeleteImage(string publicId, string folder);
+        Task DeleteFolder(string folder);
     }
 }
