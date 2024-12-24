@@ -1,8 +1,11 @@
 ﻿using CloudinaryDotNet;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MrKatsuWeb.Application.Interfaces.Manage;
@@ -13,6 +16,8 @@ using MrKatsuWeb.Application.Services.System;
 using MrKatsuWeb.Common;
 using MrKatsuWeb.Data.EF;
 using MrKatsuWeb.Data.Entities;
+using MrKatsuWeb.DTO.Users;
+using MrKatsuWeb.DTO.Users.Validator;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,8 +54,15 @@ builder.Services.AddTransient<IProductManageService, ProductManageService>();
 builder.Services.AddTransient<IImageService, ImageService>();
 builder.Services.AddTransient<IUserService, UserServices>();
 
+//builder.Services.AddTransient<IValidator<LoginRequest>, LoginRequestValidator>();
+//builder.Services.AddTransient<IValidator<RegisterRequest>, RegisterRequestValidator>();
+
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+#region [Fluent Validator]
+builder.Services.AddFluentValidationAutoValidation()
+    .AddFluentValidationClientsideAdapters();
+builder.Services.AddValidatorsFromAssemblyContaining<LoginRequestValidator>();
+#endregion
 builder.Services.AddEndpointsApiExplorer();
 #region [Swagger]
 builder.Services.AddSwaggerGen(c =>
@@ -87,9 +99,6 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 #endregion
-
-
-
 #region[JWT Token]
 string issuer = builder.Configuration.GetValue<string>("Tokens:Issuer");
 string signingKey = builder.Configuration.GetValue<string>("Tokens:Key");
@@ -115,11 +124,6 @@ builder.Services.AddAuthentication(opt =>
     };
 });
 #endregion
-
-
-
-
-
 
 var app = builder.Build();
 

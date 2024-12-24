@@ -27,11 +27,11 @@ namespace MrKatsuWeb.Application.Services.System
             _userManager = userManager;
             _roleManager = roleManager;
         }
-        public async Task<string> Authenticate(LoginRequest request)
+        public async Task<string?> Authenticate(LoginRequest request)
         {
             var user = await _userManager.FindByNameAsync(request.UserName);
             if (user == null) return null;
-            var result = await _signInManager.PasswordSignInAsync(user, request.Password, request.RememberMe, true);
+            var result = await _signInManager.PasswordSignInAsync(user, request.Password, request.RememberMe ?? false, true);
             var role = await _userManager.GetRolesAsync(user);
             if (!result.Succeeded) return null;
             var claims = new[]
